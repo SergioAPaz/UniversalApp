@@ -10,6 +10,12 @@ namespace UniversalApp.Controllers
     {
         public ActionResult Index()
         {
+            if (Request.Cookies["UserNameEDRMVC"] == null)
+            {
+
+                
+            }
+
             return View();
         }
 
@@ -19,7 +25,7 @@ namespace UniversalApp.Controllers
 
             return View();
         }
-
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
