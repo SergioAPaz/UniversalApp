@@ -6,6 +6,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
@@ -17,17 +19,33 @@ namespace UniversalApp.Controllers.Api
     //With this line only the domain universalpp will be allowed to consume the rest api. 
     //But important if you use POSTMAN the connection will be allowed because you are using the same domain(universalapp)
     //in short corz will help us prevent access from other domains to our api website but will not restrict access to tools such as postman
-    [EnableCors(origins: "http://www.universalapp.com",headers:"*",methods:"*")] 
+    //[EnableCors(origins: "http://www.universalapp.com",headers:"*",methods:"*")] 
     public class CT_ProductsController : ApiController
     {
         private StoreDBEntities1 db = new StoreDBEntities1();
 
         //[JwtAuthentication]//descomentar esta linea para habilitar seguridad proporcionada por jwt
         // GET: api/CT_Products
+        static public string CookieStampToken = "cookie-stamp";
         public IQueryable<CT_Products> GetCT_Products()
         {
+
+            CookieHeaderValue Coki = Request.Headers.GetCookies("UserNameEDRMVC").FirstOrDefault();
+
+            if (Coki != null)
+
+            {
+                return db.CT_Products;
+            }
+            else
+            {
+                return null;
+            }
+
             
-            return db.CT_Products;
+           
+
+           
         }
 
         // GET: api/CT_Products/5
